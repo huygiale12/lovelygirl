@@ -1,243 +1,573 @@
 <!doctype html>
 <html lang="vi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Gửi Trà My</title>
 
 <style>
   :root{
-    --bg1:#0f172a; --bg2:#020617;
-    --card:rgba(255,255,255,0.06);
-    --border:rgba(255,255,255,.14);
-    --text:#e5e7eb; --muted:#cbd5f5;
-    --accent:#a5b4fc;
+    --bg1:#070b1a;
+    --bg2:#0b1636;
+    --card: rgba(255,255,255,.06);
+    --stroke: rgba(255,255,255,.12);
+    --text: #eef3ff;
+    --muted: #b8c6f0;
+    --accent: #a5b4fc;
+    --accent2:#7cf0c8;
+    --shadow: 0 28px 90px rgba(0,0,0,.55);
+    --ease: cubic-bezier(.2,.9,.2,1);
+    --radius: 22px;
+    --font: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   }
+
+  *{ box-sizing:border-box }
+  html,body{ height:100% }
   body{
-    margin:0; min-height:100vh;
-    display:flex; align-items:center; justify-content:center;
-    background:linear-gradient(160deg,var(--bg1),var(--bg2));
-    font-family:system-ui,-apple-system,BlinkMacSystemFont;
-    color:var(--text);
+    margin:0;
+    font-family: var(--font);
+    color: var(--text);
+    overflow-x:hidden;
+    background:
+      radial-gradient(1200px 700px at 18% 10%, rgba(165,180,252,.35), transparent 60%),
+      radial-gradient(900px 600px at 85% 25%, rgba(124,240,200,.15), transparent 55%),
+      linear-gradient(160deg, var(--bg1), var(--bg2));
   }
+
+  /* subtle moving noise */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    pointer-events:none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+    opacity:.08;
+    transform: translateZ(0);
+    animation: drift 16s linear infinite;
+    mix-blend-mode: overlay;
+  }
+  @keyframes drift{
+    0%{ transform: translate3d(0,0,0) }
+    50%{ transform: translate3d(-2%, 1%,0) }
+    100%{ transform: translate3d(0,0,0) }
+  }
+
+  .wrap{
+    min-height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 28px 16px;
+    position:relative;
+  }
+
   .card{
-    width:min(720px,92%);
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:18px;
-    padding:22px;
-    box-shadow:0 20px 50px rgba(0,0,0,.35);
+    width:min(880px, 100%);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+    border: 1px solid var(--stroke);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(12px);
+    overflow:hidden;
+    transform: translateY(14px);
+    opacity:0;
+    animation: rise 900ms var(--ease) forwards;
+    position:relative;
   }
-  h1{ font-size:18px; margin:0 0 8px; }
-  p{ font-size:14px; line-height:1.7; color:var(--muted); margin:0 0 10px; }
-  .quote{
-    margin:14px 0 0;
-    padding:14px;
-    border-left:3px solid var(--accent);
-    background:rgba(255,255,255,.04);
-    border-radius:12px;
-    color:var(--text);
-    font-size:14px;
-    line-height:1.7;
+  @keyframes rise{
+    to{ transform: translateY(0); opacity:1; }
   }
 
-  .controls{
-    display:flex; gap:10px; flex-wrap:wrap;
-    margin-top:14px;
-  }
-  button{
-    padding:10px 12px;
-    border:none;
-    border-radius:12px;
-    font-weight:650;
-    cursor:pointer;
-  }
-  .play{ background:var(--accent); color:#020617; }
-  .ghost{
-    background:rgba(255,255,255,.10);
-    color:var(--text);
-    border:1px solid rgba(255,255,255,.12);
+  .glow{
+    position:absolute; inset:-2px;
+    pointer-events:none;
+    background:
+      radial-gradient(520px 260px at 20% 0%, rgba(165,180,252,.22), transparent 70%),
+      radial-gradient(520px 260px at 85% 10%, rgba(124,240,200,.14), transparent 70%),
+      radial-gradient(900px 500px at 40% 120%, rgba(165,180,252,.10), transparent 70%);
   }
 
-  .sectionTitle{
-    margin-top:18px;
+  header{
+    padding: 22px 22px 14px;
+    border-bottom: 1px solid rgba(255,255,255,.10);
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .badge{
+    width:44px; height:44px;
+    border-radius: 14px;
+    display:grid; place-items:center;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.05);
+    box-shadow: 0 12px 26px rgba(0,0,0,.25);
+  }
+  .title h1{
+    margin:0;
+    font-size:18px;
+    letter-spacing:.2px;
+  }
+  .title p{
+    margin:6px 0 0;
+    color: var(--muted);
     font-size:13px;
-    color:#94a3b8;
+    line-height:1.55;
+    max-width: 540px;
+  }
+
+  .topActions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:flex-end;
+  }
+
+  .btn{
+    appearance:none;
+    border:none;
+    cursor:pointer;
+    border-radius: 14px;
+    padding: 10px 12px;
+    font-weight: 750;
+    color: var(--text);
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    transition: transform 160ms var(--ease), box-shadow 160ms var(--ease), background 160ms var(--ease);
+    user-select:none;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .btn:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 14px 32px rgba(0,0,0,.28);
+    background: rgba(255,255,255,.08);
+  }
+  .btn:active{ transform: translateY(0) scale(.99); }
+  .btnPrimary{
+    color:#051027;
+    border:none;
+    background: linear-gradient(135deg, rgba(165,180,252,.95), rgba(124,240,200,.70));
+  }
+  .btnPrimary:hover{ box-shadow: 0 18px 40px rgba(0,0,0,.35); }
+
+  .content{
+    padding: 18px 22px 22px;
+    display:grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap: 14px;
+  }
+  @media (max-width: 820px){
+    .content{ grid-template-columns:1fr; }
+  }
+
+  .panel{
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,.10);
+    background: rgba(8,12,26,.38);
+    padding: 16px;
+    position:relative;
+    overflow:hidden;
+  }
+  .panel::before{
+    content:"";
+    position:absolute; inset:-2px;
+    background: radial-gradient(420px 220px at 10% 0%, rgba(165,180,252,.12), transparent 70%);
+    pointer-events:none;
+    opacity:.65;
+  }
+  .panel h2{
+    margin:0 0 10px;
+    font-size: 14px;
+    letter-spacing:.2px;
+  }
+  .panel p{
+    margin:0 0 10px;
+    color: var(--muted);
+    line-height:1.7;
+    font-size:14px;
+    position:relative;
+  }
+
+  .quote{
+    margin-top:12px;
+    padding:14px;
+    border-radius:16px;
+    border:1px dashed rgba(255,255,255,.16);
+    background: rgba(255,255,255,.03);
+    position:relative;
+  }
+  .quote .mark{
+    position:absolute; top:10px; right:12px;
+    opacity:.55; font-size:18px;
+  }
+  .quote strong{ color: var(--text); }
+
+  .subnote{
+    margin-top:10px;
+    font-size:12px;
+    color: rgba(255,255,255,.58);
+  }
+
+  .gridTitle{
+    margin:0 0 10px;
+    font-size:12px;
+    color: rgba(255,255,255,.62);
+    letter-spacing:.2px;
   }
 
   .grid{
-    margin-top:10px;
     display:grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0,1fr));
     gap:10px;
   }
-  @media (max-width:520px){ .grid{ grid-template-columns:1fr; } }
+  @media (max-width: 520px){
+    .grid{ grid-template-columns:1fr; }
+  }
 
   .tile{
     text-align:left;
-    padding:12px;
-    border-radius:14px;
+    padding:12px 12px;
+    border-radius:16px;
     border:1px solid rgba(255,255,255,.12);
-    background:rgba(255,255,255,.05);
-    color:var(--text);
-    font-weight:650;
+    background: rgba(255,255,255,.05);
+    color: var(--text);
+    font-weight:800;
+    cursor:pointer;
+    transition: transform 160ms var(--ease), box-shadow 160ms var(--ease), border-color 160ms var(--ease);
+    position:relative;
+    overflow:hidden;
   }
+  .tile::after{
+    content:"";
+    position:absolute; inset:-40%;
+    background: radial-gradient(220px 160px at 0% 0%, rgba(165,180,252,.18), transparent 60%);
+    transform: rotate(10deg);
+    opacity:.0;
+    transition: opacity 180ms var(--ease);
+  }
+  .tile:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 16px 36px rgba(0,0,0,.26);
+    border-color: rgba(165,180,252,.25);
+  }
+  .tile:hover::after{ opacity:1; }
   .tile small{
     display:block;
     margin-top:6px;
-    font-weight:500;
-    color:#b6c3e8;
+    font-weight:600;
+    color: rgba(184,198,240,.95);
     line-height:1.5;
   }
 
   /* Modal */
   .overlay{
     position:fixed; inset:0;
-    background:rgba(0,0,0,.55);
+    background: rgba(0,0,0,.62);
     display:none;
-    align-items:center; justify-content:center;
-    padding:18px;
+    align-items:center;
+    justify-content:center;
+    padding: 18px;
   }
   .overlay.show{ display:flex; }
+
   .modal{
-    width:min(520px, 96%);
-    background:rgba(10,14,30,.92);
+    width:min(620px, 96%);
+    border-radius: 18px;
+    background: rgba(10,14,30,.92);
     border:1px solid rgba(255,255,255,.14);
-    border-radius:16px;
-    box-shadow:0 25px 70px rgba(0,0,0,.45);
+    box-shadow: 0 30px 100px rgba(0,0,0,.55);
     overflow:hidden;
+    transform: translateY(16px) scale(.98);
+    opacity:0;
+    animation: modalIn 220ms var(--ease) forwards;
   }
-  .modalHead{
-    padding:14px;
-    border-bottom:1px solid rgba(255,255,255,.12);
-    display:flex; justify-content:space-between; align-items:center;
-  }
-  .modalHead b{ font-size:14px; }
-  .x{
-    background:transparent;
-    border:1px solid rgba(255,255,255,.18);
-    color:var(--text);
-    border-radius:10px;
-    padding:6px 10px;
-    cursor:pointer;
-  }
-  .modalBody{
-    padding:14px;
-    color:var(--muted);
-    line-height:1.7;
-    font-size:14px;
+  @keyframes modalIn{
+    to{ transform: translateY(0) scale(1); opacity:1; }
   }
 
-  .note{
-    margin-top:12px;
-    font-size:12px;
-    color:#94a3b8;
-    text-align:center;
+  .modalHead{
+    padding:14px 14px 10px;
+    border-bottom: 1px solid rgba(255,255,255,.12);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .modalHead b{ font-size:14px; letter-spacing:.2px; }
+  .x{
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.16);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 8px 10px;
+    cursor:pointer;
+    transition: transform 160ms var(--ease), background 160ms var(--ease);
+  }
+  .x:hover{ transform: translateY(-1px); background: rgba(255,255,255,.08); }
+
+  .modalBody{
+    padding: 16px 14px 14px;
+    color: var(--muted);
+    line-height:1.75;
+    font-size:14px;
+  }
+  .modalBody .big{
+    color: var(--text);
+    font-weight:900;
+    margin-bottom:10px;
+  }
+
+  .modalActions{
+    padding: 12px 14px 14px;
+    border-top: 1px solid rgba(255,255,255,.12);
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  /* sparkles */
+  .spark{
+    position:fixed;
+    font-size:14px;
+    pointer-events:none;
+    opacity:0;
+    transform: translate(-50%,-50%) scale(.85);
+    animation: spark 900ms var(--ease) forwards;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,.35));
+  }
+  @keyframes spark{
+    15%{ opacity:1; transform: translate(-50%,-50%) scale(1); }
+    100%{ opacity:0; transform: translate(-50%,-90%) scale(1.2); }
   }
 </style>
 </head>
 
 <body>
-<div class="card">
-  <h1>Gửi Trà My</h1>
+  <div class="wrap">
+    <main class="card" role="main">
+      <div class="glow"></div>
 
-  <p>
-    Nếu dạo này mọi thứ hơi nặng hơn bình thường,
-    thì bạn không cần phải ổn ngay đâu.
-    Không cần phản hồi gì cả. Đọc xong là đủ rồi.
-  </p>
+      <header>
+        <div class="brand">
+          <div class="badge">🤍</div>
+          <div class="title">
+            <h1>Gửi Trà My</h1>
+            <p>
+              Trang này chỉ để bạn dừng lại một chút. Không cần phản hồi gì cả.
+              Khi bạn muốn, cứ chọn đúng “tâm trạng” bên dưới.
+            </p>
+          </div>
+        </div>
 
-  <div class="quote">
-    Nếu muốn khóc thì cứ khóc.<br>
-    Chỉ xin đừng ở lại với nỗi buồn một mình quá lâu.<br><br>
-    <strong>Mình ở đây.</strong>
+        <div class="topActions">
+          <button class="btn btnPrimary" id="btnPlay" type="button">▶ Nghe nhạc</button>
+          <button class="btn" id="btnPause" type="button">⏸ Dừng</button>
+          <button class="btn" id="btnCalm" type="button">🫧 30s bình tĩnh</button>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="panel">
+          <h2>Lời nhắn</h2>
+          <p>
+            Nếu dạo này mọi thứ hơi nặng hơn bình thường, bạn không cần phải “ổn” ngay.
+            Chỉ cần thở một chút, rồi đi tiếp bằng nhịp của mình.
+          </p>
+
+          <div class="quote">
+            <div class="mark">“</div>
+            <p style="margin:0;color:var(--text);position:relative;">
+              Nếu muốn khóc thì cứ khóc.<br/>
+              Chỉ xin đừng ở lại với nỗi buồn một mình quá lâu.<br/><br/>
+              <strong>Mình ở đây.</strong>
+            </p>
+          </div>
+
+          <div class="subnote">Nhạc sẽ chỉ chạy khi bạn bấm “Nghe nhạc”.</div>
+        </div>
+
+        <div class="panel">
+          <div class="gridTitle">Chọn đúng tâm trạng của bạn</div>
+          <div class="grid">
+            <button class="tile" data-mood="homesick">🏠 Homesick
+              <small>Nhớ nhà, nhớ cảm giác thuộc về</small>
+            </button>
+            <button class="tile" data-mood="lonely">🌙 Cô đơn
+              <small>Muốn có ai đó ở cạnh</small>
+            </button>
+            <button class="tile" data-mood="pressure">📚 Áp lực
+              <small>Việc nhiều, lòng căng</small>
+            </button>
+            <button class="tile" data-mood="overthink">🧠 Overthinking
+              <small>Nghĩ mãi không dừng</small>
+            </button>
+            <button class="tile" id="tileIG">📩 Nhắn cho Raymond
+              <small>Instagram @huyg.le</small>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <audio id="music" src="music.mp3"></audio>
+    </main>
   </div>
 
-  <div class="controls">
-    <button class="play" onclick="playMusic()">▶ Nghe nhạc</button>
-    <button class="ghost" onclick="pauseMusic()">⏸ Dừng</button>
-  </div>
-
-  <div class="sectionTitle">Chọn đúng tâm trạng của bạn</div>
-  <div class="grid">
-    <button class="tile" onclick="openMood('homesick')">
-      🏠 Homesick
-      <small>Nhớ nhà, thấy lạc lõng</small>
-    </button>
-    <button class="tile" onclick="openMood('lonely')">
-      🌙 Cô đơn
-      <small>Muốn có ai đó ở cạnh</small>
-    </button>
-    <button class="tile" onclick="openMood('pressure')">
-      📚 Áp lực
-      <small>Việc nhiều, lòng căng</small>
-    </button>
-    <button class="tile" onclick="openMood('overthink')">
-      🧠 Overthinking
-      <small>Nghĩ mãi không dừng</small>
-    </button>
-
-    <!-- INSTAGRAM -->
-    <button class="tile" onclick="openIG()">
-      📩 Nhắn cho Raymond trên Instagram
-      <small>Mở DM @huyg.le (không cần nói nhiều)</small>
-    </button>
-  </div>
-
-  <audio id="music" src="music.mp3"></audio>
-</div>
-
-<!-- Modal -->
-<div class="overlay" id="overlay" onclick="closeIfBackdrop(event)">
-  <div class="modal">
-    <div class="modalHead">
-      <b id="modalTitle"></b>
-      <button class="x" onclick="closeModal()">Đóng</button>
+  <!-- Modal -->
+  <div class="overlay" id="overlay">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modalHead">
+        <b id="modalTitle">Sổ nhỏ</b>
+        <button class="x" id="btnClose">Đóng</button>
+      </div>
+      <div class="modalBody" id="modalBody"></div>
+      <div class="modalActions" id="modalActions"></div>
     </div>
-    <div class="modalBody" id="modalBody"></div>
   </div>
-</div>
 
 <script>
-const music = document.getElementById("music");
-function playMusic(){ music.play(); }
-function pauseMusic(){ music.pause(); }
+  const music = document.getElementById("music");
+  const btnPlay = document.getElementById("btnPlay");
+  const btnPause = document.getElementById("btnPause");
+  const btnCalm = document.getElementById("btnCalm");
+  const overlay = document.getElementById("overlay");
+  const btnClose = document.getElementById("btnClose");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalBody = document.getElementById("modalBody");
+  const modalActions = document.getElementById("modalActions");
+  const tileIG = document.getElementById("tileIG");
 
-const overlay = document.getElementById("overlay");
-const modalTitle = document.getElementById("modalTitle");
-const modalBody = document.getElementById("modalBody");
+  btnPlay.addEventListener("click", ()=>{ music.play(); sparkle("✨"); });
+  btnPause.addEventListener("click", ()=>{ music.pause(); sparkle("🤍"); });
+  btnCalm.addEventListener("click", ()=> openMood("calm"));
 
-function openMood(key){
-  const m = moods[key];
-  modalTitle.textContent = m.title;
-  modalBody.innerHTML = m.body;
-  overlay.classList.add("show");
-}
-function closeModal(){ overlay.classList.remove("show"); }
-function closeIfBackdrop(e){ if(e.target===overlay) closeModal(); }
+  tileIG.addEventListener("click", ()=>{
+    sparkle("💌");
+    window.open("https://ig.me/m/huyg.le","_blank","noopener,noreferrer");
+  });
 
-function openIG(){
-  window.open("https://ig.me/m/huyg.le", "_blank", "noopener,noreferrer");
-}
+  document.querySelectorAll(".tile[data-mood]").forEach(btn=>{
+    btn.addEventListener("click", (e)=>{
+      const mood = btn.getAttribute("data-mood");
+      sparkle(Math.random()>.5 ? "✨" : "🤍", e.clientX, e.clientY);
+      openMood(mood);
+    });
+  });
 
-const moods = {
-  homesick:{
-    title:"🏠 Homesick",
-    body:"Nhớ nhà không làm bạn yếu. Nó chỉ nhắc rằng bạn từng có một nơi rất ấm."
-  },
-  lonely:{
-    title:"🌙 Cô đơn",
-    body:"Có những lúc im lặng cũng cần có người ở đó. Mình ở đây."
-  },
-  pressure:{
-    title:"📚 Áp lực",
-    body:"Bạn không cần giải quyết cả đời trong hôm nay. Từng việc nhỏ là đủ."
-  },
-  overthink:{
-    title:"🧠 Overthinking",
-    body:"Không phải suy nghĩ nào cũng là sự thật. Có cái chỉ là mệt."
+  function openMood(key){
+    const m = moods[key];
+    modalTitle.textContent = m.title;
+    modalBody.innerHTML = m.bodyHTML;
+    modalActions.innerHTML = m.actionsHTML || `
+      <button class="btn btnPrimary" type="button" onclick="closeModal()">OK</button>
+      <button class="btn" type="button" onclick="closeModal()">Đóng</button>
+    `;
+    overlay.classList.add("show");
   }
-};
+
+  function closeModal(){ overlay.classList.remove("show"); }
+  btnClose.addEventListener("click", closeModal);
+  overlay.addEventListener("click", (e)=>{ if(e.target===overlay) closeModal(); });
+
+  function sparkle(char="✨", x=null, y=null){
+    const s = document.createElement("div");
+    s.className = "spark";
+    s.textContent = char;
+    const px = x ?? (window.innerWidth/2);
+    const py = y ?? (window.innerHeight/2);
+    s.style.left = px + "px";
+    s.style.top  = py + "px";
+    document.body.appendChild(s);
+    setTimeout(()=> s.remove(), 950);
+  }
+
+  function runCalm(){
+    const steps = [
+      "Hít vào 4… thả lỏng vai.",
+      "Giữ 2… không vội.",
+      "Thở ra 6… thả hết căng.",
+      "Hít vào 4…",
+      "Giữ 2…",
+      "Thở ra 6…",
+      "Xong rồi. Bạn không một mình."
+    ];
+    let i = 0;
+    const el = document.getElementById("calmStep");
+    el.textContent = steps[0];
+    const t = setInterval(()=>{
+      i++;
+      if(!document.getElementById("calmStep")) { clearInterval(t); return; }
+      if(i >= steps.length){ clearInterval(t); return; }
+      document.getElementById("calmStep").textContent = steps[i];
+      sparkle(i%2? "🫧":"✨");
+    }, 3800);
+  }
+
+  const moods = {
+    homesick:{
+      title:"🏠 Homesick",
+      bodyHTML: `
+        <div class="big">Sổ nhỏ cho lúc nhớ nhà</div>
+        Nhớ nhà không làm bạn yếu. Nó chỉ nhắc rằng bạn từng có một nơi rất ấm.<br><br>
+        Nếu hôm nay thấy lạc lõng, thử một điều rất nhỏ: uống nước ấm, ăn một món quen,
+        hoặc mở một bài nhạc cũ — chỉ để trái tim được “chạm” một chút.<br><br>
+        <b>Quote:</b> “Nhớ nhà không làm mình nhỏ lại. Nó chỉ nhắc rằng mình từng được yêu rất nhiều.”
+      `
+    },
+    lonely:{
+      title:"🌙 Cô đơn",
+      bodyHTML: `
+        <div class="big">Sổ nhỏ cho lúc cô đơn</div>
+        Có khi đông người vẫn thấy trống — chuyện đó bình thường.<br><br>
+        Nếu bạn không muốn nói chuyện, vẫn ok. Im lặng cũng được.
+        Quan trọng là bạn không cần tự gồng một mình.<br><br>
+        <b>Quote:</b> “Bạn không cần một đám đông. Bạn chỉ cần một người thật lòng.”
+      `
+    },
+    pressure:{
+      title:"📚 Áp lực",
+      bodyHTML: `
+        <div class="big">Sổ nhỏ cho lúc áp lực</div>
+        Khi mọi thứ dồn lại, đừng cố giải cả đời trong một buổi tối.<br><br>
+        Chia nhỏ: 1 việc → 10 phút → xong thì nghỉ. Bạn không cần thắng nhanh.<br><br>
+        <b>Quote:</b> “Tiến một chút mỗi ngày vẫn là tiến.”
+      `
+    },
+    overthink:{
+      title:"🧠 Overthinking",
+      bodyHTML: `
+        <div class="big">Sổ nhỏ cho lúc nghĩ quá nhiều</div>
+        Bạn nghĩ nhiều vì bạn quan tâm. Nhưng trái tim cũng cần nghỉ như não vậy.<br><br>
+        Nhắc nhẹ: không phải suy nghĩ nào cũng là sự thật.
+        Có cái chỉ là mệt quá mà thôi.<br><br>
+        <b>Quote:</b> “Không phải mọi suy nghĩ đều đúng. Có cái chỉ là mệt.”
+      `
+    },
+    calm:{
+      title:"🫧 30s bình tĩnh",
+      bodyHTML: `
+        <div class="big">30 giây cho bạn thở</div>
+        <div id="calmStep" style="color:var(--text);font-weight:800;"></div>
+        <div style="margin-top:10px;">Bạn có thể để nhạc chạy nhẹ ở nền nếu muốn.</div>
+      `,
+      actionsHTML: `
+        <button class="btn btnPrimary" type="button" onclick="runCalm()">▶ Bắt đầu</button>
+        <button class="btn" type="button" onclick="closeModal()">Đóng</button>
+      `
+    }
+  };
+
+  // expose functions used in inline HTML (modal actions)
+  window.closeModal = closeModal;
+  window.runCalm = runCalm;
 </script>
 </body>
 </html>
