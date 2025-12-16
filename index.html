@@ -28,10 +28,6 @@
     padding:22px;
     box-shadow:0 20px 50px rgba(0,0,0,.35);
   }
-  .top{
-    display:flex; gap:14px; align-items:flex-start; justify-content:space-between;
-    flex-wrap:wrap;
-  }
   h1{ font-size:18px; margin:0 0 8px; }
   p{ font-size:14px; line-height:1.7; color:var(--muted); margin:0 0 10px; }
   .quote{
@@ -57,7 +53,11 @@
     cursor:pointer;
   }
   .play{ background:var(--accent); color:#020617; }
-  .ghost{ background:rgba(255,255,255,.10); color:var(--text); border:1px solid rgba(255,255,255,.12); }
+  .ghost{
+    background:rgba(255,255,255,.10);
+    color:var(--text);
+    border:1px solid rgba(255,255,255,.12);
+  }
 
   .sectionTitle{
     margin-top:18px;
@@ -108,9 +108,9 @@
     overflow:hidden;
   }
   .modalHead{
-    padding:14px 14px 10px;
+    padding:14px;
     border-bottom:1px solid rgba(255,255,255,.12);
-    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    display:flex; justify-content:space-between; align-items:center;
   }
   .modalHead b{ font-size:14px; }
   .x{
@@ -127,299 +127,117 @@
     line-height:1.7;
     font-size:14px;
   }
-  .modalBody .big{
-    color:var(--text);
-    margin-bottom:10px;
-  }
-  .modalActions{
-    padding:12px 14px 14px;
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    border-top:1px solid rgba(255,255,255,.12);
-  }
+
   .note{
     margin-top:12px;
     font-size:12px;
     color:#94a3b8;
     text-align:center;
   }
-
-  textarea{
-    width:100%;
-    min-height:110px;
-    border-radius:12px;
-    border:1px solid rgba(255,255,255,.14);
-    background:rgba(255,255,255,.05);
-    color:var(--text);
-    padding:10px 10px;
-    resize:vertical;
-    outline:none;
-    font-size:14px;
-    line-height:1.6;
-  }
-  .hint{
-    font-size:12px;
-    color:#93a4d6;
-    margin-top:8px;
-  }
 </style>
 </head>
 
 <body>
-  <div class="card">
-    <div class="top">
-      <div>
-        <h1>Gửi Trà My</h1>
-        <p>
-          Nếu dạo này mọi thứ hơi nặng hơn bình thường thì bạn không cần phải ổn ngay đâu.
-          Không cần phản hồi gì cả. Đọc xong là đủ rồi.
-        </p>
-        <div class="quote">
-          Nếu muốn khóc thì cứ khóc.<br>
-          Chỉ xin đừng ở lại với nỗi buồn một mình quá lâu.<br><br>
-          <strong>Mình ở đây.</strong>
-        </div>
-      </div>
+<div class="card">
+  <h1>Gửi Trà My</h1>
 
-      <div style="min-width:220px;">
-        <div class="controls">
-          <button class="play" onclick="playMusic()">▶ Nghe nhạc</button>
-          <button class="ghost" onclick="pauseMusic()">⏸ Dừng</button>
-          <button class="ghost" onclick="openMood('quick')">🫧 30s bình tĩnh</button>
-        </div>
-        <div class="note">(Nhạc sẽ chỉ chạy khi bạn bấm “Nghe nhạc”.)</div>
-      </div>
-    </div>
+  <p>
+    Nếu dạo này mọi thứ hơi nặng hơn bình thường,
+    thì bạn không cần phải ổn ngay đâu.
+    Không cần phản hồi gì cả. Đọc xong là đủ rồi.
+  </p>
 
-    <div class="sectionTitle">Chọn đúng “tâm trạng” của bạn (mở sổ nhỏ)</div>
-    <div class="grid">
-      <button class="tile" onclick="openMood('homesick')">
-        🏠 Homesick
-        <small>Nhớ nhà, nhớ nhịp cũ, thấy lạc lõng</small>
-      </button>
-      <button class="tile" onclick="openMood('lonely')">
-        🌙 Cô đơn
-        <small>Muốn có ai đó ở cạnh, dù chỉ là im lặng</small>
-      </button>
-      <button class="tile" onclick="openMood('pressure')">
-        📚 Áp lực
-        <small>Việc nhiều, lòng căng, muốn được thở</small>
-      </button>
-      <button class="tile" onclick="openMood('overthink')">
-        🧠 Overthinking
-        <small>Nghĩ mãi không dừng, tự trách mình</small>
-      </button>
-      <button class="tile" onclick="openMood('confidence')">
-        ✨ Thiếu tự tin
-        <small>Sợ mình không đủ tốt, sợ “không kịp”</small>
-      </button>
-      <button class="tile" onclick="openMood('raymond')">
-        💌 Gửi lời nhắn đến anh Raymond siêu đẹp trai
-        <small>Viết một câu nhẹ nhàng, sang, không sến</small>
-      </button>
-    </div>
-
-    <audio id="music" src="music.mp3"></audio>
+  <div class="quote">
+    Nếu muốn khóc thì cứ khóc.<br>
+    Chỉ xin đừng ở lại với nỗi buồn một mình quá lâu.<br><br>
+    <strong>Mình ở đây.</strong>
   </div>
 
-  <!-- Modal -->
-  <div class="overlay" id="overlay" onclick="closeIfBackdrop(event)">
-    <div class="modal" role="dialog" aria-modal="true">
-      <div class="modalHead">
-        <b id="modalTitle">Sổ nhỏ</b>
-        <button class="x" onclick="closeModal()">Đóng</button>
-      </div>
-      <div class="modalBody" id="modalBody"></div>
-      <div class="modalActions" id="modalActions"></div>
-    </div>
+  <div class="controls">
+    <button class="play" onclick="playMusic()">▶ Nghe nhạc</button>
+    <button class="ghost" onclick="pauseMusic()">⏸ Dừng</button>
   </div>
+
+  <div class="sectionTitle">Chọn đúng tâm trạng của bạn</div>
+  <div class="grid">
+    <button class="tile" onclick="openMood('homesick')">
+      🏠 Homesick
+      <small>Nhớ nhà, thấy lạc lõng</small>
+    </button>
+    <button class="tile" onclick="openMood('lonely')">
+      🌙 Cô đơn
+      <small>Muốn có ai đó ở cạnh</small>
+    </button>
+    <button class="tile" onclick="openMood('pressure')">
+      📚 Áp lực
+      <small>Việc nhiều, lòng căng</small>
+    </button>
+    <button class="tile" onclick="openMood('overthink')">
+      🧠 Overthinking
+      <small>Nghĩ mãi không dừng</small>
+    </button>
+
+    <!-- INSTAGRAM -->
+    <button class="tile" onclick="openIG()">
+      📩 Nhắn cho Raymond trên Instagram
+      <small>Mở DM @huyg.le (không cần nói nhiều)</small>
+    </button>
+  </div>
+
+  <audio id="music" src="music.mp3"></audio>
+</div>
+
+<!-- Modal -->
+<div class="overlay" id="overlay" onclick="closeIfBackdrop(event)">
+  <div class="modal">
+    <div class="modalHead">
+      <b id="modalTitle"></b>
+      <button class="x" onclick="closeModal()">Đóng</button>
+    </div>
+    <div class="modalBody" id="modalBody"></div>
+  </div>
+</div>
 
 <script>
-  const music = document.getElementById("music");
-  function playMusic(){ music.play(); }
-  function pauseMusic(){ music.pause(); }
+const music = document.getElementById("music");
+function playMusic(){ music.play(); }
+function pauseMusic(){ music.pause(); }
 
-  const overlay = document.getElementById("overlay");
-  const modalTitle = document.getElementById("modalTitle");
-  const modalBody = document.getElementById("modalBody");
-  const modalActions = document.getElementById("modalActions");
+const overlay = document.getElementById("overlay");
+const modalTitle = document.getElementById("modalTitle");
+const modalBody = document.getElementById("modalBody");
 
-  function openMood(key){
-    const data = moods[key];
-    modalTitle.textContent = data.title;
-    modalBody.innerHTML = data.bodyHTML;
-    modalActions.innerHTML = data.actionsHTML || defaultActions();
-    overlay.classList.add("show");
+function openMood(key){
+  const m = moods[key];
+  modalTitle.textContent = m.title;
+  modalBody.innerHTML = m.body;
+  overlay.classList.add("show");
+}
+function closeModal(){ overlay.classList.remove("show"); }
+function closeIfBackdrop(e){ if(e.target===overlay) closeModal(); }
+
+function openIG(){
+  window.open("https://ig.me/m/huyg.le", "_blank", "noopener,noreferrer");
+}
+
+const moods = {
+  homesick:{
+    title:"🏠 Homesick",
+    body:"Nhớ nhà không làm bạn yếu. Nó chỉ nhắc rằng bạn từng có một nơi rất ấm."
+  },
+  lonely:{
+    title:"🌙 Cô đơn",
+    body:"Có những lúc im lặng cũng cần có người ở đó. Mình ở đây."
+  },
+  pressure:{
+    title:"📚 Áp lực",
+    body:"Bạn không cần giải quyết cả đời trong hôm nay. Từng việc nhỏ là đủ."
+  },
+  overthink:{
+    title:"🧠 Overthinking",
+    body:"Không phải suy nghĩ nào cũng là sự thật. Có cái chỉ là mệt."
   }
-  function closeModal(){ overlay.classList.remove("show"); }
-  function closeIfBackdrop(e){
-    if(e.target === overlay) closeModal();
-  }
-
-  function defaultActions(){
-    return `
-      <button class="play" onclick="copyFromModal()">📩 Copy đoạn này</button>
-      <button class="ghost" onclick="closeModal()">OK</button>
-    `;
-  }
-
-  async function copyText(text){
-    try{
-      await navigator.clipboard.writeText(text);
-      toast("Đã copy ✅");
-    }catch(e){
-      toast("Không copy được trên trình duyệt này.");
-    }
-  }
-
-  function toast(msg){
-    // toast mini bằng alert nhẹ (giữ đơn giản)
-    // nếu bạn muốn toast đẹp, mình làm thêm
-    alert(msg);
-  }
-
-  function getPlainTextFromHTML(html){
-    const tmp = document.createElement("div");
-    tmp.innerHTML = html.replaceAll("<br>", "\n").replaceAll("<br/>", "\n").replaceAll("<br />", "\n");
-    return tmp.textContent || tmp.innerText || "";
-  }
-
-  function copyFromModal(){
-    const text = getPlainTextFromHTML(modalBody.innerHTML);
-    copyText(text.trim());
-  }
-
-  // 30s calm script
-  function runQuickCalm(){
-    const steps = [
-      "Hít vào 4… (vai thả lỏng)",
-      "Giữ 2… (đừng vội)",
-      "Thở ra 6… (thả hết căng)",
-      "Hít vào 4…",
-      "Giữ 2…",
-      "Thở ra 6…",
-      "Xong rồi. Bạn không một mình."
-    ];
-    let i = 0;
-    const base = `<div class="big"><b>🫧 30 giây bình tĩnh</b></div>`;
-    modalBody.innerHTML = base + `<div id="step">${steps[0]}</div>`;
-    modalActions.innerHTML = `
-      <button class="play" onclick="pauseMusic()">⏸ Tắt nhạc</button>
-      <button class="ghost" onclick="closeModal()">Đóng</button>
-    `;
-    const t = setInterval(()=>{
-      i++;
-      const el = document.getElementById("step");
-      if(!el){ clearInterval(t); return; }
-      if(i >= steps.length){ el.textContent = steps[steps.length-1]; clearInterval(t); return; }
-      el.textContent = steps[i];
-    }, 4000);
-  }
-
-  const moods = {
-    quick: {
-      title: "🫧 30s bình tĩnh",
-      bodyHTML: "Đang mở hướng dẫn 30 giây…",
-      actionsHTML: `
-        <button class="play" onclick="runQuickCalm()">▶ Bắt đầu</button>
-        <button class="ghost" onclick="closeModal()">Đóng</button>
-      `
-    },
-    homesick: {
-      title: "🏠 Homesick",
-      bodyHTML: `
-        <div class="big"><b>Sổ nhỏ cho lúc nhớ nhà</b></div>
-        Bạn không “yếu” vì nhớ nhà. Bạn chỉ đang mang theo một nơi chốn mình thương.<br><br>
-        Hôm nay, thử một điều rất nhỏ: <b>ăn một món quen</b> hoặc <b>nghe một bài nhạc cũ</b>.
-        Không phải để quay lại, mà để trái tim được “chạm” một chút rồi sẽ nhẹ hơn.<br><br>
-        <b>Quote:</b><br>
-        “Nhớ nhà không làm mình nhỏ lại. Nó chỉ nhắc rằng mình từng được yêu rất nhiều.”
-      `
-    },
-    lonely: {
-      title: "🌙 Cô đơn",
-      bodyHTML: `
-        <div class="big"><b>Sổ nhỏ cho lúc cô đơn</b></div>
-        Có những lúc đông người vẫn thấy trống, chuyện đó bình thường lắm.<br><br>
-        Nếu bạn không muốn nói chuyện, mình vẫn ở đây theo cách nhẹ nhất.
-        Bạn chỉ cần nhắn một emoji cũng được.<br><br>
-        <b>Quote:</b><br>
-        “Bạn không cần một đám đông. Bạn chỉ cần một người thật lòng.”
-      `
-    },
-    pressure: {
-      title: "📚 Áp lực",
-      bodyHTML: `
-        <div class="big"><b>Sổ nhỏ cho lúc áp lực</b></div>
-        Khi áp lực kéo căng, mình hay nhắc một câu: <b>đừng giải cả đời trong một buổi tối</b>.<br><br>
-        Chia nhỏ ra: 1 việc — 10 phút — xong là nghỉ. Bạn không cần thắng nhanh.<br><br>
-        <b>Quote:</b><br>
-        “Tiến một chút mỗi ngày vẫn là tiến. Và vẫn đáng tự hào.”
-      `
-    },
-    overthink: {
-      title: "🧠 Overthinking",
-      bodyHTML: `
-        <div class="big"><b>Sổ nhỏ cho lúc nghĩ quá nhiều</b></div>
-        Bạn đang nghĩ nhiều vì bạn quan tâm. Nhưng trái tim cũng cần nghỉ như não vậy.<br><br>
-        Thử viết ra 3 dòng thôi:
-        1) Điều mình sợ nhất
-        2) Điều mình kiểm soát được hôm nay
-        3) Một bước nhỏ mình sẽ làm<br><br>
-        <b>Quote:</b><br>
-        “Không phải mọi suy nghĩ đều là sự thật. Có cái chỉ là mệt.”
-      `
-    },
-    confidence: {
-      title: "✨ Thiếu tự tin",
-      bodyHTML: `
-        <div class="big"><b>Sổ nhỏ cho lúc thấy mình “không đủ”</b></div>
-        Bạn không cần hoàn hảo để xứng đáng. Bạn chỉ cần tiếp tục sống tử tế với chính mình.<br><br>
-        Nếu hôm nay bạn chỉ làm được 60% — cũng tốt rồi.
-        Vì 60% vẫn là một ngày bạn không bỏ cuộc.<br><br>
-        <b>Quote:</b><br>
-        “Bạn không tụt lại. Bạn chỉ đang đi bằng nhịp của mình.”
-      `
-    },
-    raymond: {
-      title: "💌 Gửi lời nhắn đến anh Raymond siêu đẹp trai",
-      bodyHTML: `
-        <div class="big"><b>Viết lời nhắn ở đây</b></div>
-        <textarea id="msg" placeholder="Ví dụ: Anh Raymond ơi, cảm ơn anh vì luôn tinh tế..."></textarea>
-        <div class="hint">
-          Gợi ý “sang – nhẹ – không sến” (bạn có thể copy luôn):<br>
-          1) “Anh Raymond ơi, cảm ơn anh vì sự tử tế rất ‘quiet’. Nó làm em thấy yên.”<br>
-          2) “Anh đẹp trai thật, nhưng cái đáng nể hơn là cách anh khiến người khác thấy được trân trọng.”<br>
-          3) “Nếu hôm nay em hơi mệt, em muốn nói một câu thôi: có anh ở đó là đủ an tâm rồi.”
-        </div>
-      `,
-      actionsHTML: `
-        <button class="play" onclick="copyRaymond()">📩 Copy lời nhắn</button>
-        <button class="ghost" onclick="fillSuggestion(1)">✨ Gợi ý 1</button>
-        <button class="ghost" onclick="fillSuggestion(2)">✨ Gợi ý 2</button>
-        <button class="ghost" onclick="fillSuggestion(3)">✨ Gợi ý 3</button>
-        <button class="ghost" onclick="closeModal()">Đóng</button>
-      `
-    }
-  };
-
-  function fillSuggestion(n){
-    const el = document.getElementById("msg");
-    if(!el) return;
-    const suggestions = {
-      1: "Anh Raymond ơi, cảm ơn anh vì sự tử tế rất ‘quiet’. Nó làm em thấy yên.",
-      2: "Anh đẹp trai thật, nhưng cái đáng nể hơn là cách anh khiến người khác thấy được trân trọng.",
-      3: "Nếu hôm nay em hơi mệt, em muốn nói một câu thôi: có anh ở đó là đủ an tâm rồi."
-    };
-    el.value = suggestions[n] || "";
-  }
-
-  function copyRaymond(){
-    const el = document.getElementById("msg");
-    const text = (el && el.value.trim()) ? el.value.trim() : "Anh Raymond ơi, cảm ơn anh vì sự tử tế rất ‘quiet’. Nó làm em thấy yên.";
-    copyText(text);
-  }
+};
 </script>
 </body>
 </html>
