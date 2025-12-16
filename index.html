@@ -1,496 +1,120 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Gửi Trà My</title>
-  <meta name="description" content="Một trang nhỏ cho Trà My, để thấy nhẹ hơn." />
-  <style>
-    :root{
-      --bg1:#0b1020;
-      --bg2:#0f1a3a;
-      --card:#0f1630cc;
-      --stroke:#ffffff1a;
-      --text:#eaf0ff;
-      --muted:#b8c4e6;
-      --accent:#88a8ff;
-      --accent2:#b7ffda;
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
-      --radius: 22px;
-      --ease: cubic-bezier(.2,.9,.2,1);
-      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:var(--font);
-      color:var(--text);
-      background:
-        radial-gradient(1200px 800px at 20% 10%, rgba(136,168,255,.35), transparent 60%),
-        radial-gradient(900px 700px at 80% 30%, rgba(183,255,218,.18), transparent 55%),
-        linear-gradient(160deg, var(--bg1), var(--bg2));
-      overflow-x:hidden;
-    }
-    .wrap{
-      min-height:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:28px 16px;
-    }
-    .card{
-      width:min(940px, 100%);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border:1px solid var(--stroke);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      position:relative;
-      overflow:hidden;
-      transform: translateY(10px);
-      animation: rise 900ms var(--ease) forwards;
-      backdrop-filter: blur(10px);
-    }
-    @keyframes rise{ to{transform: translateY(0)} }
-    .glow{
-      position:absolute; inset:-2px;
-      pointer-events:none;
-      background:
-        radial-gradient(500px 260px at 30% 0%, rgba(136,168,255,.18), transparent 70%),
-        radial-gradient(420px 220px at 80% 10%, rgba(183,255,218,.12), transparent 65%);
-    }
-    header{
-      padding:26px 26px 10px;
-      display:flex;
-      gap:14px;
-      align-items:center;
-      border-bottom:1px solid var(--stroke);
-    }
-    .badge{
-      width:44px;height:44px;border-radius:14px;
-      display:grid;place-items:center;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.05);
-    }
-    .title{ line-height:1.15; }
-    .title h1{ margin:0; font-size:18px; letter-spacing:.2px; font-weight:700; }
-    .title p{ margin:6px 0 0; font-size:13px; color:var(--muted); }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gửi Trà My</title>
 
-    .content{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:18px;
-      padding:22px 26px 26px;
-    }
-    @media (max-width: 820px){ .content{grid-template-columns:1fr} }
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(160deg,#0f172a,#020617);
+  font-family:system-ui,-apple-system,BlinkMacSystemFont;
+  color:#e5e7eb;
+}
 
-    .panel{
-      border:1px solid var(--stroke);
-      border-radius:18px;
-      background: rgba(10,14,30,.45);
-      padding:18px;
-      position:relative;
-      overflow:hidden;
-    }
-    .panel h2{ margin:0 0 10px; font-size:15px; font-weight:700; }
-    .panel p{
-      margin:0 0 10px;
-      color:var(--muted);
-      line-height:1.65;
-      font-size:14px;
-    }
-    .quote{
-      margin-top:14px;
-      padding:14px;
-      border-radius:16px;
-      border:1px dashed rgba(255,255,255,.18);
-      background: rgba(255,255,255,.03);
-      position:relative;
-    }
-    .quote .mark{ position:absolute; top:10px; right:12px; opacity:.55; font-size:18px; }
-    .quote strong{ color:var(--text); font-weight:700; }
+.card{
+  width:min(420px,92%);
+  background:rgba(255,255,255,0.06);
+  border-radius:18px;
+  padding:26px 22px;
+  box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
 
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:14px;
-    }
-    button{
-      appearance:none;
-      border:none;
-      border-radius:14px;
-      padding:10px 12px;
-      font-weight:700;
-      cursor:pointer;
-      transition: transform 180ms var(--ease), opacity 180ms var(--ease), box-shadow 180ms var(--ease);
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      box-shadow: 0 10px 25px rgba(0,0,0,.25);
-      user-select:none;
-    }
-    button:active{transform: scale(.98)}
-    .btn-primary{
-      background: linear-gradient(135deg, rgba(136,168,255,.95), rgba(183,255,218,.75));
-      color:#061027;
-    }
-    .btn-ghost{
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.14);
-      color:var(--text);
-      box-shadow:none;
-    }
-    .tiny{ font-size:12px; color:var(--muted); margin-top:10px; }
+h1{
+  font-size:18px;
+  margin:0 0 10px;
+  text-align:center;
+}
 
-    .chiprow{ display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 14px; }
-    .chip{
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.04);
-      color:var(--muted);
-      font-size:12px;
-    }
+p{
+  font-size:14px;
+  line-height:1.7;
+  color:#cbd5f5;
+}
 
-    .meter{
-      margin-top:12px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.04);
-      padding:14px;
-    }
-    .meter label{
-      display:flex;
-      justify-content:space-between;
-      font-size:12px;
-      color:var(--muted);
-      margin-bottom:10px;
-    }
-    .bar{
-      height:10px;
-      border-radius:999px;
-      background: rgba(255,255,255,.10);
-      overflow:hidden;
-    }
-    .fill{
-      height:100%;
-      width: 0%;
-      border-radius:999px;
-      background: linear-gradient(90deg, rgba(136,168,255,.95), rgba(183,255,218,.85));
-      transition: width 900ms var(--ease);
-    }
-    .note{
-      margin-top:12px;
-      padding:14px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      color:var(--muted);
-      line-height:1.6;
-      font-size:13px;
-    }
-    .footer{
-      padding:14px 26px 20px;
-      border-top:1px solid var(--stroke);
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-      color:var(--muted);
-      font-size:12px;
-    }
-    .linklike{
-      color:var(--text);
-      opacity:.9;
-      text-decoration:none;
-      border-bottom:1px dotted rgba(255,255,255,.35);
-    }
+.quote{
+  margin:16px 0;
+  padding:14px;
+  border-left:3px solid #a5b4fc;
+  background:rgba(255,255,255,.04);
+  font-size:14px;
+}
 
-    .floaty{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
-    .heart{
-      position:absolute;
-      font-size:14px;
-      opacity:0;
-      transform: translateY(10px) scale(.9);
-      animation: pop 1200ms var(--ease) forwards;
-      filter: drop-shadow(0 8px 10px rgba(0,0,0,.25));
-    }
-    @keyframes pop{
-      20%{opacity:.95; transform: translateY(0) scale(1)}
-      100%{opacity:0; transform: translateY(-90px) scale(1.15)}
-    }
-    .toast{
-      position: fixed;
-      left:50%;
-      bottom:18px;
-      transform: translateX(-50%);
-      background: rgba(10,14,30,.78);
-      border:1px solid rgba(255,255,255,.16);
-      color:var(--text);
-      padding:10px 12px;
-      border-radius:14px;
-      box-shadow: var(--shadow);
-      font-size:13px;
-      opacity:0;
-      pointer-events:none;
-      transition: opacity 220ms var(--ease), transform 220ms var(--ease);
-    }
-    .toast.show{
-      opacity:1;
-      transform: translateX(-50%) translateY(-2px);
-    }
-  </style>
+.controls{
+  display:flex;
+  gap:10px;
+  margin-top:18px;
+}
+
+button{
+  flex:1;
+  padding:10px;
+  border:none;
+  border-radius:12px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.play{
+  background:#a5b4fc;
+  color:#020617;
+}
+
+.pause{
+  background:rgba(255,255,255,.1);
+  color:#e5e7eb;
+}
+
+.note{
+  margin-top:14px;
+  font-size:12px;
+  color:#94a3b8;
+  text-align:center;
+}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <main class="card" role="main" aria-label="Một lời nhắn nhỏ">
-      <div class="glow"></div>
-      <div class="floaty" id="floaty"></div>
+<div class="card">
+  <h1>Gửi Trà My</h1>
 
-      <header>
-        <div class="badge" aria-hidden="true">🤍</div>
-        <div class="title">
-          <h1>Gửi Trà My</h1>
-          <p>Một trang nhỏ, nhẹ nhàng thôi. Không cần phải phản hồi.</p>
-        </div>
-      </header>
+  <p>
+    Nếu dạo này mọi thứ hơi nặng hơn bình thường,
+    thì bạn không cần phải ổn ngay đâu.
+  </p>
 
-      <section class="content">
-        <div class="panel">
-          <h2>Lời nhắn</h2>
-          <p>
-            Trà My ơi, dạo này nếu mọi thứ đang “nặng” hơn bình thường,
-            thì bạn không cần cố tỏ ra ổn ngay lập tức đâu.
-          </p>
-          <p>
-            Có những ngày chỉ cần đi chậm lại một chút cũng đã là rất giỏi rồi.
-          </p>
-
-          <div class="quote" aria-label="Một câu dịu dàng">
-            <div class="mark">“</div>
-            <p style="margin:0; color:var(--text); line-height:1.6;">
-              Nếu bạn muốn khóc thì cứ khóc.
-              <br />
-              Nhưng xin đừng ở lại với nỗi buồn một mình quá lâu.
-              <br /><br />
-              <strong>Mình ở đây</strong> — im lặng cũng được, kể chuyện cũng được.
-              Bạn không cần phải gồng.
-            </p>
-          </div>
-
-          <div class="actions" role="group" aria-label="Hành động nhẹ nhàng">
-            <button class="btn-primary" id="btnBreathe" type="button">🫧 Thở cùng mình (30s)</button>
-            <button class="btn-ghost" id="btnHug" type="button">🤍 Một cái ôm ảo</button>
-            <button class="btn-ghost" id="btnCopy" type="button">📩 Copy lời nhắn</button>
-          </div>
-
-          <div class="tiny">(Không áp lực phải trả lời nha. Đọc là đủ rồi.)</div>
-        </div>
-
-        <div class="panel">
-          <h2>Nhịp mới, nhưng bạn vẫn là bạn</h2>
-          <div class="chiprow">
-            <div class="chip">Bạn vẫn xứng đáng</div>
-            <div class="chip">Bạn vẫn có người quan tâm</div>
-            <div class="chip">Từng bước là đủ</div>
-          </div>
-
-          <div class="meter" aria-label="Thanh dịu xuống">
-            <label>
-              <span>Hôm nay nhẹ hơn một chút</span>
-              <span id="meterText">cao</span>
-            </label>
-            <div class="bar" aria-hidden="true">
-              <div class="fill" id="fill"></div>
-            </div>
-          </div>
-
-          <div class="note" id="note">
-            Gợi ý nhỏ: uống một ngụm nước, thả lỏng vai, rồi hít sâu một hơi.
-            Từ từ thôi, bạn không cần phải thắng nhanh.
-          </div>
-
-          <div class="actions" style="margin-top:12px;">
-            <button class="btn-primary" id="btnSoft" type="button">✨ Một câu dịu hơn</button>
-            <button class="btn-ghost" id="btnReset" type="button">↺ Reset</button>
-          </div>
-
-          <div class="tiny">Trang này chỉ để bạn thấy “được chăm” một chút.</div>
-        </div>
-      </section>
-
-      <div class="footer">
-        <div>Made quietly • with care</div>
-        <div><a class="linklike" href="#" id="openMusic">Bật “nhạc im lặng”</a></div>
-      </div>
-    </main>
+  <div class="quote">
+    Nếu muốn khóc thì cứ khóc.<br>
+    Chỉ xin đừng ở lại với nỗi buồn một mình quá lâu.<br><br>
+    <strong>Mình ở đây.</strong>
   </div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <p>
+    Không cần phản hồi gì cả.
+    Đọc xong là đủ rồi.
+  </p>
 
-  <script>
-    const fill = document.getElementById('fill');
-    const meterText = document.getElementById('meterText');
-    const note = document.getElementById('note');
-    const toast = document.getElementById('toast');
-    const floaty = document.getElementById('floaty');
+  <div class="controls">
+    <button class="play" onclick="playMusic()">▶ Nghe nhạc</button>
+    <button class="pause" onclick="pauseMusic()">⏸ Dừng</button>
+  </div>
 
-    let level = 85; // 0..100
-    let musicOn = false;
-    let audio;
+  <div class="note">
+    (Mở nhạc nếu bạn muốn nhẹ hơn một chút)
+  </div>
 
-    const softLines = [
-      "Bạn không cần phải ổn ngay. Bạn chỉ cần được tử tế với chính mình.",
-      "Nếu hôm nay khó quá thì mình cho phép bạn mệt — mai tính tiếp.",
-      "Bạn đang làm tốt hơn bạn nghĩ.",
-      "Cứ chậm thôi. Bạn không bị tụt lại đâu.",
-      "Có người nghĩ về bạn theo cách rất dịu dàng."
-    ];
-    let softIndex = 0;
+  <audio id="music" src="music.mp3"></audio>
+</div>
 
-    function setMeter(newLevel){
-      level = Math.max(0, Math.min(100, newLevel));
-      fill.style.width = (100 - level) + "%";
-      if(level > 70) meterText.textContent = "cao";
-      else if(level > 45) meterText.textContent = "vừa";
-      else if(level > 20) meterText.textContent = "thấp";
-      else meterText.textContent = "rất thấp";
-    }
-
-    function showToast(msg){
-      toast.textContent = msg;
-      toast.classList.add('show');
-      clearTimeout(showToast._t);
-      showToast._t = setTimeout(()=> toast.classList.remove('show'), 2200);
-    }
-
-    function spawnHearts(count=10){
-      const w = floaty.clientWidth || window.innerWidth;
-      for(let i=0;i<count;i++){
-        const el = document.createElement('div');
-        el.className = 'heart';
-        el.textContent = Math.random() > 0.5 ? '🤍' : '✨';
-        el.style.left = Math.floor(Math.random() * (w - 20)) + 'px';
-        el.style.bottom = '10px';
-        el.style.animationDelay = (Math.random() * 180) + 'ms';
-        floaty.appendChild(el);
-        setTimeout(()=> el.remove(), 1400);
-      }
-    }
-
-    function breathe30s(){
-      const script = [
-        "Hít vào… 4",
-        "Giữ… 4",
-        "Thở ra… 6",
-        "Hít vào… 4",
-        "Giữ… 4",
-        "Thở ra… 6",
-        "Hít vào… 4",
-        "Giữ… 4",
-        "Thở ra… 6"
-      ];
-      let i = 0;
-      showToast("Bắt đầu nhé. Thả lỏng vai một chút.");
-      const timer = setInterval(()=>{
-        note.textContent = script[i] || "Tốt rồi. Bạn làm được.";
-        setMeter(level - 6);
-        spawnHearts(6);
-        i++;
-        if(i >= script.length){
-          clearInterval(timer);
-          note.textContent = "Xong rồi. Nếu vẫn buồn, cứ buồn nhẹ thôi. Bạn không một mình.";
-          showToast("Bạn đã thở rất tốt.");
-        }
-      }, 3200);
-    }
-
-    async function copyMessage(){
-      const msg =
-`Trà My ơi, nếu dạo này mọi thứ đang “nặng” hơn bình thường,
-thì bạn không cần cố tỏ ra ổn ngay lập tức đâu.
-
-Nếu bạn muốn khóc thì cứ khóc.
-Nhưng xin đừng ở lại với nỗi buồn một mình quá lâu.
-Mình ở đây — im lặng cũng được, kể chuyện cũng được.
-
-(Không áp lực phải trả lời nha. Đọc là đủ rồi.)`;
-      try{
-        await navigator.clipboard.writeText(msg);
-        showToast("Đã copy lời nhắn 💌");
-      }catch(e){
-        showToast("Không copy được. Bạn có thể copy thủ công nhé.");
-      }
-    }
-
-    function toggleMusic(){
-      if(!audio){
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const master = ctx.createGain(); master.gain.value = 0.0;
-        master.connect(ctx.destination);
-
-        const osc = ctx.createOscillator();
-        osc.type = "sine";
-        osc.frequency.value = 196;
-
-        const lfo = ctx.createOscillator();
-        lfo.type = "sine";
-        lfo.frequency.value = 0.12;
-
-        const lfoGain = ctx.createGain();
-        lfoGain.gain.value = 28;
-
-        lfo.connect(lfoGain);
-        lfoGain.connect(osc.frequency);
-
-        osc.connect(master);
-        osc.start();
-        lfo.start();
-
-        audio = { ctx, master };
-      }
-
-      musicOn = !musicOn;
-      if(musicOn){
-        audio.ctx.resume?.();
-        audio.master.gain.setTargetAtTime(0.03, audio.ctx.currentTime, 0.2);
-        showToast("Đã bật (rất nhẹ) 🎧");
-      }else{
-        audio.master.gain.setTargetAtTime(0.0, audio.ctx.currentTime, 0.15);
-        showToast("Đã tắt.");
-      }
-      document.getElementById('openMusic').textContent = musicOn ? "Tắt “nhạc im lặng”" : "Bật “nhạc im lặng”";
-    }
-
-    document.getElementById('btnBreathe').addEventListener('click', breathe30s);
-    document.getElementById('btnHug').addEventListener('click', () => {
-      spawnHearts(18);
-      setMeter(level - 10);
-      showToast("Ôm ảo nè 🤍");
-      note.textContent = "Bạn không cần phải gồng. Có người đang đứng về phía bạn.";
-    });
-    document.getElementById('btnCopy').addEventListener('click', copyMessage);
-    document.getElementById('btnSoft').addEventListener('click', () => {
-      softIndex = (softIndex + 1) % softLines.length;
-      note.textContent = softLines[softIndex];
-      setMeter(level - 7);
-      spawnHearts(10);
-      showToast("Một câu dịu hơn.");
-    });
-    document.getElementById('btnReset').addEventListener('click', () => {
-      setMeter(85);
-      note.textContent = "Gợi ý nhỏ: uống một ngụm nước, thả lỏng vai, rồi hít sâu một hơi. Từ từ thôi, bạn không cần phải thắng nhanh.";
-      showToast("Reset xong.");
-    });
-    document.getElementById('openMusic').addEventListener('click', (e) => {
-      e.preventDefault();
-      toggleMusic();
-    });
-
-    setMeter(level);
-    setTimeout(()=> { setMeter(level - 8); }, 500);
-  </script>
+<script>
+const music = document.getElementById("music");
+function playMusic(){ music.play(); }
+function pauseMusic(){ music.pause(); }
+</script>
 </body>
 </html>
